@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    container_name: 'recipe-scraper-db'
+    image: 'postgres:11.5-alpine'
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - '54322:5432'
+    volumes:
+      - ./database/data/db:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
