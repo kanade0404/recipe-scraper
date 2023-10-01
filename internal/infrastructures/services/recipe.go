@@ -13,13 +13,6 @@ type recipeService struct {
 	DB *sql.DB
 }
 
-type recipeDTO struct {
-	ID                   int
-	Name                 string
-	ArtistID             int
-	CookingTimeInMinutes int
-}
-
 func (r recipeService) Save(id, cookingTimeInMinutes, artistId int, name string) (*models.Recipe, error) {
 	log.Printf("start save recipe: id: %d", id)
 	defer log.Printf("end save recipe: %d", id)
