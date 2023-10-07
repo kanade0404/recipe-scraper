@@ -10,10 +10,6 @@ import (
 実体はinternal/infrastructures/servicesにあります。
 */
 type ArtistRepository interface {
-	// Save
-	/*
-		アーティスト情報を登録します。
-		すでに存在する場合は更新します。
-	*/
+	// Save レシピ情報の登録をします。すでに存在する場合は更新をします。
 	Save(ID int, name string) (*models.Artist, error)
 }

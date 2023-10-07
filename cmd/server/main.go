@@ -4,14 +4,13 @@ import (
 	"github.com/labstack/echo/v4"
 	"recipe-scraper/internal/config"
 	"recipe-scraper/internal/handlers"
-	"recipe-scraper/internal/infrastructures/services"
+	"recipe-scraper/internal/infrastructures/services/artist"
+	"recipe-scraper/internal/infrastructures/services/recipe"
+	"recipe-scraper/internal/logger"
 	"recipe-scraper/internal/usecases"
 )
 
-// main
-/*
-アプリケーションのスターティングポイント
-*/
+// main アプリケーションのスターティングポイント
 func main() {
 	e := echo.New()
 	e.Logger.Fatal(run(e))
@@ -27,8 +26,8 @@ func run(e *echo.Echo) error {
 	if err != nil {
 		return err
 	}
-	recipeService := services.NewRecipeService(c.DB)
-	artistService := services.NewArtistService(c.DB)
+	recipeService := recipe.NewRecipeService(c.DB)
+	artistService := artist.NewArtistService(c.DB)
 	recipeUsecase := usecases.NewRecipeUseCase(recipeService, artistService)
 	nadiaHandler := handlers.NewNadiaHandler(recipeUsecase)
 	api := e.Group("/api")
@@ -38,5 +37,6 @@ func run(e *echo.Echo) error {
 	v1.GET("/scraping/nadia/pickup", nadiaHandler.ListPickupRecipes)
 	// /api/v1/recipe
 	v1.GET("/recipe", nadiaHandler.List)
+	logger.InitLogger()
 	return e.Start(":1323")
 }
