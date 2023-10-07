@@ -1,0 +1,14 @@
+artist:
+  - id: 1
+    name: 'Artist 1'
+  - id: 2
+    name: 'Artist 2'
+recipe:
+  - id: 1
+    name: 'Recipe 1'
+    artist_id: 1
+    cooking_time_in_minutes: 10
+  - id: 2
+    name: 'Recipe 2'
+    cooking_time_in_minutes: 20
+    artist_id: 2

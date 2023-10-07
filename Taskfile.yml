@@ -4,13 +4,23 @@ dotenv:
   - .env
 
 tasks:
+  # データベースのマイグレーションをします
   migration:
     cmds:
       - psqldef -U $DB_USER -W $DB_PASSWORD -p $DB_PORT $DB_NAME < database/sql/schema.sql
+  # task migrationのdry-runをします
   dry-migration:
     cmds:
       - psqldef -U $DB_USER -W $DB_PASSWORD -p $DB_PORT $DB_NAME --dry-run < database/sql/schema.sql
+  # domains/models以下のファイルを削除してから、domains/models以下のファイルをデータベースの定義から生成します
   generate:
     cmds:
       - tables-to-go -v -t pg -h db -d $DB_NAME -u $DB_USER -p $DB_PASSWORD -pn models -port $DB_PORT -h $DB_HOST -of internal/domains/models/
       - sh ./scripts/generate_domains.sh
+  test:
+    cmds:
+      - go test ./...
+  # coverageを開く
+  coverage:
+    cmds:
+      - go tool cover -html=cover.out

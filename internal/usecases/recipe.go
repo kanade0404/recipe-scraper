@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
-	"log"
 	"net/url"
 	"recipe-scraper/internal/domains/models"
 	"recipe-scraper/internal/domains/repositories"
 	initialize "recipe-scraper/internal/infrastructures/chromedp/initialize"
 	"recipe-scraper/internal/infrastructures/chromedp/run"
+	"recipe-scraper/internal/logger"
 	"regexp"
 	"strconv"
 	"strings"
@@ -32,8 +32,8 @@ type recipeUserCase struct {
 ナディアのおすすめレシピ一覧からレシピ情報を取得して返す
 */
 func (ru *recipeUserCase) ScrapingPickupRecipes(ctx context.Context) ([]*models.Recipe, error) {
-	log.Println("start ScrapingPickupRecipes")
-	defer log.Println("end ScrapingPickupRecipes")
+	logger.Info("start ScrapingPickupRecipes")
+	defer logger.Info("end ScrapingPickupRecipes")
 	const URL = "https://oceans-nadia.com/pickup-recipes"
 	ctx, timeoutCancel, allocatorCancel, contextCancel := initialize.Nadia(ctx)
 	defer timeoutCancel()
@@ -124,8 +124,8 @@ func (ru *recipeUserCase) ScrapingPickupRecipes(ctx context.Context) ([]*models.
 保存済みのナディアのレシピ一覧を返す
 */
 func (ru *recipeUserCase) ListRecipe(ctx context.Context) ([]*models.Recipe, error) {
-	log.Println("start ListRecipe")
-	defer log.Println("end ListRecipe")
+	logger.Info("start ListRecipe")
+	defer logger.Info("end ListRecipe")
 	recipes, err := ru.recipeRepo.List(nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to select recipe: %w", err)
@@ -147,8 +147,8 @@ func NewRecipeUseCase(rr repositories.RecipeRepository, ar repositories.ArtistRe
 渡されたナディアのレシピのURLからレシピ情報を取得して保存した後に返す
 */
 func (ru *recipeUserCase) ScrapingRecipe(ctx context.Context, recipeURL string) (*models.Recipe, error) {
-	log.Println("start ScrapingRecipe")
-	defer log.Println("end ScrapingRecipe")
+	logger.Info("start ScrapingRecipe")
+	defer logger.Info("end ScrapingRecipe")
 	ctx, timeoutCancel, allocatorCancel, contextCancel := initialize.Nadia(ctx)
 	defer timeoutCancel()
 	defer allocatorCancel()

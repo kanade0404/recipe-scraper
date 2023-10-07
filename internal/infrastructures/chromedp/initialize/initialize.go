@@ -6,10 +6,7 @@ import (
 	"time"
 )
 
-// Nadia
-/*
-レシピサイトNadia向けのchromedpの初期化を行う
-*/
+// Nadia レシピサイトNadia向けのchromedpの初期化を行う
 func Nadia(c context.Context) (ctx context.Context, timeoutCancel context.CancelFunc, allocatorCancel context.CancelFunc, contextCancel context.CancelFunc) {
 	return initialize(c, []chromedp.ExecAllocatorOption{
 		// ヘッドレスモードを無効にする
@@ -31,10 +28,7 @@ func Nadia(c context.Context) (ctx context.Context, timeoutCancel context.Cancel
 		chromedp.Flag("mute-audio", false)}...)
 }
 
-// initialize
-/*
-chromedpの初期化を行う
-*/
+// initialize chromedpの初期化を行う
 func initialize(c context.Context, opts ...chromedp.ExecAllocatorOption) (ctx context.Context, timeoutCancel context.CancelFunc, allocatorCancel context.CancelFunc, contextCancel context.CancelFunc) {
 	options := append(chromedp.DefaultExecAllocatorOptions[:], opts...)
 	// 要素の取得がうまくいかなかった時にずっと待ち続けないようにtimeoutを設定する

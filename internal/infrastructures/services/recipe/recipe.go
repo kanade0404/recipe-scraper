@@ -1,11 +1,11 @@
-package services
+package recipe
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"recipe-scraper/internal/domains/models"
 	"recipe-scraper/internal/domains/repositories"
+	"recipe-scraper/internal/logger"
 	"strings"
 )
 
@@ -14,8 +14,8 @@ type recipeService struct {
 }
 
 func (r recipeService) Save(id, cookingTimeInMinutes, artistId int, name string) (*models.Recipe, error) {
-	log.Printf("start save recipe: id: %d", id)
-	defer log.Printf("end save recipe: %d", id)
+	logger.Info(fmt.Sprintf("start save recipe: id: %d", id))
+	defer logger.Info(fmt.Sprintf("end save recipe: %d", id))
 	if err := r.DB.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
@@ -36,8 +36,8 @@ DO UPDATE SET name = $2, artist_id = $3, cooking_time_in_minutes = $4 RETURNING 
 }
 
 func (r recipeService) List(input *repositories.RecipeListInput) ([]*models.Recipe, error) {
-	log.Printf("start list recipe: %+v", input)
-	defer log.Printf("end list recipe: %+v", input)
+	logger.Info(fmt.Sprintf("start list recipe: %+v", input))
+	defer logger.Info(fmt.Sprintf("end list recipe: %+v", input))
 	if err := r.DB.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
@@ -74,7 +74,7 @@ func (r recipeService) List(input *repositories.RecipeListInput) ([]*models.Reci
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
-			log.Printf("failed to close rows: %v", err)
+			logger.Error(fmt.Sprintf("failed to close rows: %v", err))
 		}
 	}(rows)
 	var recipes []*models.Recipe

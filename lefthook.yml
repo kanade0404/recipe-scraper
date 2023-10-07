@@ -1,0 +1,21 @@
+pre-commit:
+  parallel: true
+  commands:
+    gofmt:
+      glob: "*.go"
+      run: |
+        for file in {staged_files}; do
+          go fmt $file
+        done
+    govet:
+      glob: "*.go"
+      run: |
+        for file in {staged_files}; do
+          go vet $file
+        done
+    actionlint:
+      glob: ".github/workflows/*.yml"
+      run: |
+        for file in {staged_files}; do
+          cat $file | docker run --rm -i rhysd/actionlint:latest -color -
+        done

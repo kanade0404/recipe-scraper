@@ -1,11 +1,11 @@
-package services
+package artist
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"recipe-scraper/internal/domains/models"
 	"recipe-scraper/internal/domains/repositories"
+	"recipe-scraper/internal/logger"
 )
 
 type artistService struct {
@@ -13,8 +13,8 @@ type artistService struct {
 }
 
 func (a artistService) Save(ID int, name string) (*models.Artist, error) {
-	log.Println("start save artist")
-	defer log.Println("end save artist")
+	logger.Info("start save artist")
+	defer logger.Info("end save artist")
 	if err := a.DB.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
