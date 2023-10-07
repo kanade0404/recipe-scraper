@@ -2,8 +2,6 @@ name: CI Golang
 
 on:
   push:
-    branches:
-      - master
 
 jobs:
   build:
